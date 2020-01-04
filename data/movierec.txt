@@ -1,0 +1,70 @@
+users.dat - a felhasznalok adatai:
+
+    UserID::nem::kor::foglalkozás::iranyitószám
+    
+    - kor: 
+        *  1:  "18 alatti"
+        * 18:  "18-24"
+        * 25:  "25-34"
+        * 35:  "35-44"
+        * 45:  "45-49"
+        * 50:  "50-55"
+        * 56:  "56+"
+                            
+    - Lehetséges foglalkozások:
+                            
+        *  0:  "egyeb" vagy nem isemrt
+        *  1:  "szellemi szabadfoglalkozasu" 
+        *  2:  "muvesz"
+        *  3:  "pap/ugyintezo"
+        *  4:  "egyetemi/foiskolai hallgato"
+        *  5:  "ugyfelszolgatos"
+        *  6:  "orvos/apolo"
+        *  7:  "kozepvezeto"
+        *  8:  "agrarium"
+        *  9:  "haztartasbeli"
+        * 10:  "altalanos/gimnaziumi diak"
+        * 11:  "jogasz"
+        * 12:  "szoftverfejleszto"
+        * 13:  "nyugdijas"
+        * 14:  "sales/marketing"
+        * 15:  "kutato"
+        * 16:  "onallo vallakozo"
+        * 17:  "mernok/kivitelezo"
+        * 18:  "kereskedo"
+        * 19:  "munkanelkuli"
+        * 20:  "iro"
+        
+movies.dat - a filmek adatai 
+    
+    MovieID::mufaj1::mufaj2:: stb.
+    egyszerre tobb kategoriab/mufajba is tartozhat egy film
+
+    - Lehetseges mufajok/kategoriak:
+
+        * Action
+        * Adventure
+        * Animation
+        * Children's
+        * Comedy
+        * Crime
+        * Documentary
+        * Drama
+        * Fantasy
+        * Film-Noir
+        * Horror
+        * Musical
+        * Mystery
+        * Romance
+        * Sci-Fi
+        * Thriller
+        * War
+        * Western
+        
+ratings.train - tanulo ertekelesek 
+       
+        UserID MovieID Ertekeles Idopont
+        
+ratings.test - hasonloan az elozohoz, csak az ertekeles hianyzik
+ 
+Feladat: toltsuk fel a ratings.test fajl ?-t! 
