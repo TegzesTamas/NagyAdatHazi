@@ -78,6 +78,7 @@ fun main() {
         if (lastMse - mse < 0.0001) {
             break
         }
+        lastMse = mse
     }
     println(newMovieFeatures)
     println()
