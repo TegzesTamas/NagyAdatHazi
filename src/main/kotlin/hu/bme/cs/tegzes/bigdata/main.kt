@@ -56,13 +56,13 @@ fun main() {
         val mse = validationSummary.average
         println("MSE = $mse\tMin = ${validationSummary.min}\tMax=${validationSummary.max}")
         println("************************************************************************************************ END OF EPOCH $epochNum")
+        lastMses.addLast(mse)
         if (lastMses.size >= patience) {
             val oldestMse = lastMses.removeFirst()
             if (lastMses.all { it >= oldestMse }) {
                 break
             }
         }
-        lastMses.addLast(mse)
         learningRate *= 0.995
     }
 
@@ -101,11 +101,8 @@ private fun correctFeatures(
                 val guessedRating = userFeatures[userId] dot movieFeatures[movieId]
                 val error = rating - guessedRating
                 for (i in 0 until featureNum) {
-                    if (epochNum % 2 == 0) {
-                        userFeatures[userId][i] += learningRate * (2 * error * movieFeatures[movieId][i] - 2 * userFeatures[userId][i] * userRegularizationRate)
-                    } else {
-                        movieFeatures[movieId][i] += learningRate * (2 * error * userFeatures[userId][i] - 2 * movieFeatures[movieId][i] * movieRegularizationRate)
-                    }
+                    userFeatures[userId][i] += learningRate * (2 * error * movieFeatures[movieId][i] - 2 * userFeatures[userId][i] * userRegularizationRate)
+                    movieFeatures[movieId][i] += learningRate * (2 * error * userFeatures[userId][i] - 2 * movieFeatures[movieId][i] * movieRegularizationRate)
                 }
                 return error * error
             }
