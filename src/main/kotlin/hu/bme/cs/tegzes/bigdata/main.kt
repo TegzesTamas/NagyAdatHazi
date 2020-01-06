@@ -2,6 +2,7 @@ package hu.bme.cs.tegzes.bigdata
 
 import java.io.InputStream
 import java.util.stream.Collectors
+import kotlin.math.sqrt
 import kotlin.random.Random
 import kotlin.streams.toList
 
@@ -15,7 +16,6 @@ const val learningRate = .0001
 
 
 fun main() {
-    var temperature = 1
     val all =
         getResourcesAsStream("ratings.train")!!.bufferedReader().use { reader ->
             reader.lines().map { Rating.parse(it) ?: error("Could not read from $it") }.toList()
@@ -28,8 +28,10 @@ fun main() {
     val userNum = training.maxBy { it.userId }?.userId?.plus(1) ?: 0
     val movieNum = training.maxBy { it.movieId }?.movieId?.plus(1) ?: 0
 
-    val userFeatures = Array(userNum) { DoubleArray(featureNum) { Random.nextDouble(0.1) } }
-    val movieFeatures = Array(movieNum) { DoubleArray(featureNum) { Random.nextDouble(0.1) } }
+    val userFeatures =
+        Array(userNum) { DoubleArray(featureNum) { Random.nextDouble(sqrt(1 / (featureNum.toDouble()))) } }
+    val movieFeatures =
+        Array(movieNum) { DoubleArray(featureNum) { Random.nextDouble(sqrt(1 / (featureNum.toDouble()))) } }
     val newUserFeatures = Array(userNum) { userFeatures[it].clone() }
     val newMovieFeatures = Array(movieNum) { movieFeatures[it].clone() }
 
@@ -75,7 +77,7 @@ fun main() {
         val mse = validationSummary.average
         println("MSE = $mse\tMin = ${validationSummary.min}\tMax=${validationSummary.max}")
         println("************************************************************************************************ END OF EPOCH $epochNum")
-        if (lastMse - mse < 0.0001) {
+        if (lastMse - mse < 0.00001) {
             break
         }
         lastMse = mse
@@ -112,7 +114,7 @@ private fun correctFeatures(
 
 private infix fun DoubleArray.dot(other: DoubleArray): Double {
     require(this.size == other.size)
-    var ret: Double = 0.0
+    var ret = 0.0
     for (i in indices) {
         ret += this[i] * other[i]
     }
