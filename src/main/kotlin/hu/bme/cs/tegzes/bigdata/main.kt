@@ -55,7 +55,7 @@ fun main() {
         }.collect(Collectors.summarizingDouble { it })
         val mse = validationSummary.average
         println("MSE = $mse\tMin = ${validationSummary.min}\tMax=${validationSummary.max}")
-        println("************************************************************************************************ END OF EPOCH $epochNum")
+        println("*************************************************************** END OF EPOCH $epochNum")
         lastMses.addLast(mse)
         if (lastMses.size >= patience) {
             val oldestMse = lastMses.removeFirst()
