@@ -11,10 +11,10 @@ import kotlin.streams.toList
 private fun getResourcesAsStream(resource: String): InputStream? =
     Rating::class.java.classLoader.getResourceAsStream(resource)
 
-const val featureNum = 20
+const val featureNum = 10
 const val maxEpochs = 10000
 const val patience = 10
-var learningRate = .0005
+var learningRate = 0.001
 const val userRegularizationRate = 0.0001
 const val movieRegularizationRate = 0.0001
 
@@ -23,10 +23,11 @@ fun main() {
     val all =
         getResourcesAsStream("ratings.train")!!.bufferedReader().use { reader ->
             reader.lines().map { Rating.parse(it) ?: error("Could not read from $it") }.toList()
-        }
+        }.shuffled()
 
-    val (aTraining, validation) = all.partition { Random.nextDouble() < 0.9 }
-    val training = aTraining.toMutableList()
+    val validationSize = (all.size * 0.1).toInt()
+    val validation = all.take(validationSize)
+    val training = all.takeLast(all.size - validationSize).toMutableList()
 
     val userNum = training.maxBy { it.userId }?.userId?.plus(1) ?: 0
     val movieNum = training.maxBy { it.movieId }?.movieId?.plus(1) ?: 0
